@@ -12,21 +12,21 @@ function App() {
 }
 
 // Implement reducer for each action
-export default function reducer(prevState,{action, book, payload}) {
+export default function reducer(prevState,{action, payload}) {
   switch (action) {
     case ADD_BOOK :
-      initialState.favoriteBooks.push(book);
+      initialState.favoriteBooks.push(payload);
       saveToLocalStorage(initialState.favoriteBooks);
-      return {initialState};
+      return {...initialState};
     case  REMOVE_BOOK :
       initialState.favoriteBooks = initialState.favoriteBooks.filter(favoriteBook => {
-        return favoriteBook.id !== book.id;
+        return favoriteBook.id !== payload;
       });
       saveToLocalStorage(initialState.favoriteBooks);
-      return {... prevState};
+      return {... initialState};
     case SEARCH_BOOKS :
       initialState.bookSearchResults = payload;
-      return {... prevState};
+      return {... initialState};
       default:
         return prevState;
   }
