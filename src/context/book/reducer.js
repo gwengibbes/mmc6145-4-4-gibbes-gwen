@@ -15,18 +15,25 @@ function App() {
 export default function reducer(prevState,{action, payload}) {
   switch (action) {
     case ADD_BOOK :
-      initialState.favoriteBooks.push(payload);
-      saveToLocalStorage(initialState.favoriteBooks);
-      return {...initialState};
+//Check to see if a book is alread a favorite and if it is just do nothing. 
+      const added = prevState.favoriteBooks.find(favoriteBook => {
+        return favoriteBook.id === payload.id;
+      });
+      if(added){
+        return {...prevState};
+      }
+      prevState.favoriteBooks.push(payload);
+      saveToLocalStorage(prevState.favoriteBooks);
+      return {...prevState};
     case  REMOVE_BOOK :
-      initialState.favoriteBooks = initialState.favoriteBooks.filter(favoriteBook => {
+      prevState.favoriteBooks = prevState.favoriteBooks.filter(favoriteBook => {
         return favoriteBook.id !== payload;
       });
-      saveToLocalStorage(initialState.favoriteBooks);
-      return {... initialState};
+      saveToLocalStorage(prevState.favoriteBooks);
+      return {... prevState};
     case SEARCH_BOOKS :
-      initialState.bookSearchResults = payload;
-      return {... initialState};
+      prevState.bookSearchResults = payload;
+      return {... prevState};
       default:
         return prevState;
   }
